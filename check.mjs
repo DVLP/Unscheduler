@@ -12,7 +12,7 @@ compareSnapshot();
 const found = [];
 
 export function compareSnapshot(interactive = false) {
-  process.stdin.off('data', handleKeypress);
+  process.stdin.removeListener('data', handleKeypress);
   let started = false;
   const lines = fs.readFileSync(path.resolve() + '\\scheduleSnapshot.txt').toString().split('\r\n');
 
