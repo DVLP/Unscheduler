@@ -8,7 +8,7 @@ https://attack.mitre.org/wiki/Technique/T1053
 
 Except of dangerous pieces of software there are also popups appearing out of nowhere, adware, updaters, telemetry, apps "phoning home" etc.
 
-Warning: This is the very first commit and the software was built in two evenings. Only tested on one computer with Windows 10 so far. Good luck!
+Warning: Still work in progress but so far tested on 3 computers with Windows 10 and everything seems to work. Also now the program is completely invisible until new scheduled tasks detection, which makes a big difference.
 
 Free and open source.
 
