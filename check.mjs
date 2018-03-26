@@ -3,6 +3,7 @@ import { handleMessages } from './outputHandler';
 import fs from 'fs';
 import path from 'path';
 import tty from 'tty';
+import os from 'os';
 import { saveSnapshot } from './snapshot';
 
 process.openStdin();
@@ -51,6 +52,13 @@ export function compareSnapshot(interactive = false) {
         found.push(el);
       }
     });
+
+    // when running as invisible scanner but new entires were detected, open interactive version
+    if(found.length && os.userInfo().username.toLowerCase() === 'system') {
+      PSRunner.send(['schtasks /run /tn "Unsheduler-Interactive"']);
+      // process.exit();
+      return;
+    }
 
     if (found.length) {
       console.log('ATTENTION: New entries found! \n');

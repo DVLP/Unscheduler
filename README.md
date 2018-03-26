@@ -23,10 +23,10 @@ Free and open source.
 
 # Uninstalling
 
-- Double click on "Uninstall.bat" and Task Unscheduler will stop annoying you on each restart
+- Double click on "Uninstall.bat" and Task Unscheduler tasks will be removed
 
 # TO-DO's - contribute if you want
 
-- Silent check - Do not show anything on startup if nothing new was detected
+- DONE: Silent check - Do not show anything on startup if nothing new was detected
 - Detect if original system task was replaced by malware task
 - Compare existing tasks to default list of your system build version

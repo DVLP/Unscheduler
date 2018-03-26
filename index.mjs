@@ -20,14 +20,12 @@ function veryHackyGetFolder() {
 saveSnapshot().then(el => {
   scheduleItself().then(el => {
     handleMessages(el);
-  });
+  }).catch(e => console.error(e));
 });
 
 export function scheduleItself() {
   return PSRunner.send([
-    //'$trigger = New-JobTrigger -AtStartup -RandomDelay 00:00:30',
-    //'Register-ScheduledJob -Trigger $trigger -FilePath ' + veryHackyGetFolder() + '\\unsheduler.bat -Name Unsheduler'
-    // 'Unregister-ScheduledTask'
-    'schtasks /create /tn "Unsheduler" /tr ' + veryHackyGetFolder() + '\\check.bat /SC ONLOGON /ru "' + os.userInfo().username + '" /rl highest /it'
+    'schtasks /create /tn "Unsheduler-Scanner" /tr ' + veryHackyGetFolder() + '\\check.bat /SC ONLOGON /ru "System" /rl highest /it',
+    'schtasks /create /tn "Unsheduler-Interactive" /tr ' + veryHackyGetFolder() + '\\check.bat /sc once /st 16:16 /sd 12/12/2066 /ru "' + os.userInfo().username + '" /rl highest /it',
   ]);
 }
