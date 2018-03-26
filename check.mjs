@@ -11,28 +11,51 @@ process.stdin.setRawMode(true);
 compareSnapshot();
 const found = [];
 
+function splitAndTrimLine(line) {
+  var withoutOuterQuotes = line.substr(1, line.length - 2);
+  return withoutOuterQuotes.split('\",\"');
+}
+
 export function compareSnapshot(interactive = false) {
   process.stdin.removeListener('data', handleKeypress);
   let started = false;
-  const lines = fs.readFileSync(path.resolve() + '\\scheduleSnapshot.txt').toString().split('\r\n');
+  let tasksDB = [];
+  try {
+    tasksDB = JSON.parse(fs.readFileSync(path.resolve() + '\\scheduleSnapshot.txt').toString());
+  } catch (e) {
+    console.error('First run install.bat. This file will run automatically on startup.');
+    return;
+  }
 
-  return PSRunner.send(['Get-ScheduledTask']).then((result) => {
+  return PSRunner.send(['schtasks /query /V /FO CSV']).then((result) => {
+
+    var arr = result[0].output.join('').split('\r\n');
+    var jsonObj = [];
+    var headers = splitAndTrimLine(arr[0])
+    for(var i = 1; i < arr.length; i++) {
+      var data = splitAndTrimLine(arr[i]);
+      if(data[1] === 'TaskName') continue;
+
+      var obj = {};
+      for(var j = 1; j < data.length; j++) {
+         obj[headers[j].trim()] = data[j].trim();
+      }
+      jsonObj.push(obj);
+    }
+    var serialized = JSON.stringify(jsonObj);
+
     found.length = 0;
 
-    result[0].output.forEach(el => {
-      el = el.replace('\r\n', '')
-      if(started && el.trim() !== '' && !lines.includes(el)) {
-        found.push(el.slice(43, 77).trim());
-      }
-      if (el.indexOf('----') === 0) {
-        started = true;
+    jsonObj.forEach(el => {
+      if(!tasksDB.find(storedTask => storedTask['TaskName'] === el['TaskName'])) {
+        found.push(el);
       }
     });
 
     if (found.length) {
       console.log('ATTENTION: New entries found! \n');
       found.forEach((item, ind) => {
-        console.log(ind + '.', item);
+        console.log(ind + '. ' + item['TaskName']);
       })
 
       console.log('Press a number to delete an entry. If the list is good press "S" to save new entries to the snapshot and exit');
@@ -61,9 +84,9 @@ function handleKeypress(chunk, key) {
   }
 
   if (('' + chunk).toLowerCase() === 'y') {
-    console.log('Removing ' + found[removingIndex]);
+    console.log('Removing ' + found[removingIndex]['TaskName']);
     PSRunner.send([
-      'schtasks /delete /tn "' + found[removingIndex] + '" /f'
+      'schtasks /delete /tn "' + found[removingIndex]['TaskName'] + '" /f'
     ]).then((out) => {
       handleMessages(out);
       console.log('Please wait, refreshing list');
@@ -83,6 +106,6 @@ function handleKeypress(chunk, key) {
     return;
   } else {
     removingIndex = chunk;
-    console.log('Are you sure you want to remove Scheduled Task "' + found[chunk] + '"? Y/N');
+    console.log('Are you sure you want to remove Scheduled Task "' + found[chunk]['TaskName'] + '"? Y/N');
   }
 }

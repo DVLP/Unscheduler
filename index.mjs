@@ -23,8 +23,6 @@ saveSnapshot().then(el => {
   });
 });
 
-console.log('schtasks /create /tn "Unsheduler" /tr ' + veryHackyGetFolder() + '\\check.bat /SC ONLOGON /ru "' + os.userInfo().username + '" /rl highest /it');
-
 export function scheduleItself() {
   return PSRunner.send([
     //'$trigger = New-JobTrigger -AtStartup -RandomDelay 00:00:30',

@@ -14,10 +14,20 @@ export function saveSnapshot() {
           // flags: 'a' // 'a' means appending (old data will be preserved)
         });
 
-        return PSRunner.send(['Get-ScheduledTask']).then((result) => {
-          result[0].output.forEach(el => {
-            fileWriter.write(el);
-          });
+        return PSRunner.send(['schtasks /query /V /FO CSV']).then((result) => {
+          var arr = result[0].output.join('').split('\r\n')
+          var jsonObj = [];
+          var headers = splitAndTrimLine(arr[0])
+          for(var i = 1; i < arr.length; i++) {
+            var data = splitAndTrimLine(arr[i]);
+            var obj = {};
+            for(var j = 1; j < data.length; j++) {
+               obj[headers[j].trim()] = data[j].trim();
+            }
+            jsonObj.push(obj);
+          }
+          var serialized = JSON.stringify(jsonObj);
+          fileWriter.write(serialized);
           fileWriter.end();
           console.log('New snapshot saved!');
           resolve();
@@ -25,4 +35,9 @@ export function saveSnapshot() {
     //   }, 1000);
     // });
   });
+}
+
+function splitAndTrimLine(line) {
+  var withoutOuterQuotes = line.substr(1, line.length - 2);
+  return withoutOuterQuotes.split('\",\"');
 }
