@@ -15,7 +15,7 @@ Free and open source.
 # Usage
 
 - Download as ZIP
-- Unpackd
+- Unpack
 - Double click "Install.bat", allow admin access
 - Success message will(hopefully) appear
 - Restart your computer(for some reason sometimes takes two restarts) and Unscheduler should detect itself. Press "S"
