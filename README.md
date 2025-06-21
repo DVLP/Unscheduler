@@ -1,4 +1,4 @@
-# Task Unscheduler v0.0.1-pre-safe
+# Unscheduler v0.0.2
 Prevent new unwanted autoruns from sneaking into Task Scheduler.
 
 Links about dangers hiding in Task Scheduler
@@ -17,13 +17,13 @@ Free and open source.
 - Download as ZIP
 - Unpack
 - Double click "Install.bat", allow admin access
-- Success message will(hopefully) appear
+- Success message will appear
 - Restart your computer(for some reason sometimes takes two restarts) and Unscheduler should detect itself. Press "S"
 - From now on Unscheduler will check on each logon if no new crap was added to Task Scheduler
 
 # Uninstalling
 
-- Double click on "Uninstall.bat" and Task Unscheduler tasks will be removed
+- Double click on "Uninstall.bat" and Unscheduler tasks will be removed
 
 # TO-DO's - contribute if you want
 

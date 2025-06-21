@@ -1,4 +1,4 @@
-import { PSRunner } from './psrunner';
+import { PSRunner } from './psrunner.mjs';
 import { handleMessages } from './outputHandler.mjs';
 
 unschedule('Unsheduler-Scanner');

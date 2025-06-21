@@ -1,5 +1,5 @@
-import { PSRunner } from './psrunner';
-import { handleMessages } from './outputHandler';
+import { PSRunner } from './psrunner.mjs';
+import { handleMessages } from './outputHandler.mjs';
 import fs from 'fs';
 import path from 'path';
 

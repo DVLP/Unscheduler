@@ -1,12 +1,12 @@
 @echo off
 if not "%1"=="am_admin" (powershell start -verb runas '%0' am_admin & exit)
 
-echo Welcome to Task Unscheduler!
+echo Welcome to Unscheduler!
 echo;
 
 WHERE node
 IF %ERRORLEVEL% NEQ 0 (
-  ECHO Task Unscheduler requires Node.js please install first from https://nodejs.org/en/download/
+  echo Unscheduler requires Node.js please install first from https://nodejs.org/en/download/
   echo;
   pause
 ) else (

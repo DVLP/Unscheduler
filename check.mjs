@@ -1,10 +1,10 @@
-import { PSRunner } from './psrunner';
-import { handleMessages } from './outputHandler';
 import fs from 'fs';
 import path from 'path';
 import tty from 'tty';
 import os from 'os';
-import { saveSnapshot } from './snapshot';
+import { handleMessages } from './outputHandler.mjs';
+import { PSRunner } from './psrunner.mjs';
+import { saveSnapshot } from './snapshot.mjs';
 
 process.openStdin();
 process.stdin.setRawMode(true);
